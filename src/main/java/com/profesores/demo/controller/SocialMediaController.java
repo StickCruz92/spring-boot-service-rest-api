@@ -49,9 +49,30 @@ public class SocialMediaController {
 			socialMedias.add(socialMedia);
 			return new ResponseEntity<List<SocialMedia>>(socialMedias, HttpStatus.OK);
 		}
-		
-		
 	}
+		
+	// POST
+	@RequestMapping(value = "/socialMedias", method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<?> createSocialMedia(@RequestBody SocialMedia socialMedia,
+			UriComponentsBuilder uriComponentsBuilder) {
+
+		if (socialMedia.getName().equals(null) || socialMedia.getName().isEmpty()) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+
+		if (_socialMediaService.findByName(socialMedia.getName()) != null) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+
+		_socialMediaService.saveSocialMedia(socialMedia);
+		SocialMedia socialMedia2 = _socialMediaService.findByName(socialMedia.getName());
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(uriComponentsBuilder.path("/v1/socialMedias/{id}")
+				.buildAndExpand(socialMedia2.getIdSocialMedia()).toUri());
+
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
+		
 	/*
 	//GET
 	@RequestMapping(value="/socialMedias/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
