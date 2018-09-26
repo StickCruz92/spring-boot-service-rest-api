@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="course")
 public class Course implements Serializable {
@@ -32,6 +34,7 @@ public class Course implements Serializable {
 	
 	@ManyToOne(optional=true, fetch=FetchType.EAGER)
 	@JoinColumn(name="id_teacher")
+	@JsonIgnore
 	private Teacher teacher;
 	
 	

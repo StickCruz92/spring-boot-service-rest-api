@@ -2,12 +2,10 @@ package com.profesores.demo.controller;
 
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.profesores.demo.model.SocialMedia;
 import com.profesores.demo.service.SocialMediaService;
-//import com.profesores.demo.util.CustomErrorType;
 import com.profesores.demo.util.CustomErrorType;
 
 import java.util.ArrayList;
@@ -37,14 +35,18 @@ public class SocialMediaController {
 		List<SocialMedia> socialMedias = new ArrayList<>();
 		
 		if (name == null) {
+			
 			socialMedias = _socialMediaService.findAllSocialMedias();
 			if (socialMedias.isEmpty()) {
 				return new ResponseEntity(HttpStatus.NO_CONTENT);
 			}
 			
 			return new ResponseEntity<List<SocialMedia>>(socialMedias, HttpStatus.OK);
+			
 		} else {
+			
 			SocialMedia socialMedia = _socialMediaService.findByName(name);
+			
 			if (socialMedia == null) {
 				return new ResponseEntity(HttpStatus.NOT_FOUND);
 			}

@@ -12,11 +12,11 @@ import com.profesores.demo.model.Course;
 
 @Service("courseService")
 @Transactional
-public class CourseServiceImpl  implements CourseDao{
-
+public class CourseServiceImpl implements CourseService {
+	
 	@Autowired
 	private CourseDao _courseDao;
-	
+
 	@Override
 	public void saveCourse(Course course) {
 		// TODO Auto-generated method stub
@@ -26,7 +26,7 @@ public class CourseServiceImpl  implements CourseDao{
 	@Override
 	public void deleteCourseById(Long idCourse) {
 		// TODO Auto-generated method stub
-	    _courseDao.deleteCourseById(idCourse);
+		_courseDao.deleteCourseById(idCourse);
 	}
 
 	@Override
@@ -58,7 +58,5 @@ public class CourseServiceImpl  implements CourseDao{
 		// TODO Auto-generated method stub
 		return _courseDao.findByIdTeacher(idTeacher);
 	}
-
-
 
 }
