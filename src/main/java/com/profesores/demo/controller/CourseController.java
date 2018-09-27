@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.profesores.demo.model.Course;
+import com.profesores.demo.model.SocialMedia;
 import com.profesores.demo.service.CourseService;
 import com.profesores.demo.util.CustomErrorType;
 
@@ -79,5 +81,42 @@ public class CourseController {
 
 	}
 	
+	//UPDATE
+	@RequestMapping(value="/courses/{id}", method = RequestMethod.PATCH, headers = "Accept=Application/json")
+	public ResponseEntity<Course> updateCourses (@PathVariable("id") Long idCourse, @RequestBody Course course) {
+		
+		if (idCourse == null || idCourse.equals(null) || idCourse <= 0) {
+			return new ResponseEntity(new CustomErrorType("idCourse is requered"), HttpStatus.CONFLICT);
+		}
+		
+		Course currentCourse = _courseService.findById(idCourse);
+		if (currentCourse == null || currentCourse.equals(null)) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		
+		currentCourse.setName(course.getName());
+		currentCourse.setProject(course.getProject());
+		currentCourse.setTeacher(course.getTeacher());
+		currentCourse.setThemes(course.getThemes());
+		
+		_courseService.updateCourse(currentCourse);
+		return new ResponseEntity<Course>(currentCourse, HttpStatus.OK);
+	}
 	
+	//DELETE
+	@RequestMapping(value="/courses/{id}", method = RequestMethod.DELETE, headers = "Accept=Application/json")
+	public ResponseEntity<Course> deleteCourse (@PathVariable("id") Long idCourse) {
+		
+		if (idCourse == null || idCourse.equals(null) || idCourse <= 0) {
+			return new ResponseEntity(new CustomErrorType("idCourse is requered"), HttpStatus.CONFLICT);
+		}
+		
+		Course course = _courseService.findById(idCourse);
+		if (course == null || course.equals(null)) {
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}
+		
+		_courseService.deleteCourseById(idCourse);
+		return new ResponseEntity<Course>(HttpStatus.OK);
+	}
 }
