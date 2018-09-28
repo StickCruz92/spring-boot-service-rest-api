@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -30,9 +31,22 @@ public class CourseController {
 	
 	//GET
 	@RequestMapping(value="/courses", method = RequestMethod.GET, headers = "Accept=Application/json")
-	public ResponseEntity<List<Course>> getCourses () {
-		
+	public ResponseEntity<List<Course>> getCourses (@RequestParam(value="name", required = false) String name, @RequestParam (value="id_teacher", required = false) Long idTeacher ) {
 		List<Course> courses = new ArrayList<>();
+
+		if (idTeacher!=null) {
+			courses = _courseService.findByIdTeacher(idTeacher);
+			if (courses.isEmpty()) {
+				return new ResponseEntity(HttpStatus.NO_CONTENT);
+			}
+		}
+		
+		if (name!=null) {
+			Course course = _courseService.findByName(name);
+			if (course == null) {
+				return new ResponseEntity(HttpStatus.NO_CONTENT);
+			}
+		}
 		
 		courses = _courseService.findAllCourses();
 		if (courses == null || courses.isEmpty()) {
