@@ -46,7 +46,9 @@ public class CourseController {
 			if (course == null) {
 				return new ResponseEntity(HttpStatus.NO_CONTENT);
 			}
+			courses.add(course);
 		}
+		
 		
 		courses = _courseService.findAllCourses();
 		if (courses == null || courses.isEmpty()) {
@@ -110,7 +112,6 @@ public class CourseController {
 		
 		currentCourse.setName(course.getName());
 		currentCourse.setProject(course.getProject());
-		currentCourse.setTeacher(course.getTeacher());
 		currentCourse.setThemes(course.getThemes());
 		
 		_courseService.updateCourse(currentCourse);
