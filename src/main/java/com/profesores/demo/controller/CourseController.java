@@ -128,7 +128,7 @@ public class CourseController {
 		
 		Course course = _courseService.findById(idCourse);
 		if (course == null || course.equals(null)) {
-			return new ResponseEntity(HttpStatus.NO_CONTENT);
+			return new ResponseEntity(new CustomErrorType("no data"), HttpStatus.NO_CONTENT);
 		}
 		
 		_courseService.deleteCourseById(idCourse);
